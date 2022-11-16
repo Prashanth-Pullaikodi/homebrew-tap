@@ -34,7 +34,25 @@ Execute  command
   cd homebrew-tap
   ./swarm_connect.sh hostname username
 ```
+# How to upgrade or get latest updates.
+ First update all package definitions (formulae) and Homebrew itself:
 
+  ```bash
+brew update
+```
+ You can now list which of your installed packages (kegs) are outdated with:
+
+  ```bash
+brew outdated
+```  
+Upgrade a specific formula with:
+   ```bash
+brew upgrade  <formula>
+``` 
+OR Upgrade everything with:
+   ```bash
+brew upgrade 
+``` 
 
 # Usage from Local
 
