@@ -1,0 +1,79 @@
+#!/usr/bin/env bash
+#This script  connect to remote SWARM node and calls another script git@github.com:Prashanth-Pullaikodi/Interactive_terminal.git 
+#Before connecting , make sure to add SSH key which is tied to your GitHub account to the host ssh-agent:
+#ssh-add -L ~/.ssh/id_rsa
+#ssh-add -K ~/.ssh/id_rsa
+
+### Colors ##
+ESC=$(printf '\033') RESET="${ESC}[0m" BLACK="${ESC}[30m" RED="${ESC}[31m"
+GREEN="${ESC}[32m" YELLOW="${ESC}[33m" BLUE="${ESC}[34m" MAGENTA="${ESC}[35m"
+CYAN="${ESC}[36m" WHITE="${ESC}[37m" DEFAULT="${ESC}[39m"
+
+### Color Functions ##
+
+greenprint() { printf "${GREEN}%s${RESET}\n" "$1"; }
+blueprint() { printf "${BLUE}%s${RESET}\n" "$1"; }
+redprint() { printf "${RED}%s${RESET}\n" "$1"; }
+yellowprint() { printf "${YELLOW}%s${RESET}\n" "$1"; }
+magentaprint() { printf "${MAGENTA}%s${RESET}\n" "$1"; }
+cyanprint() { printf "${CYAN}%s${RESET}\n" "$1"; }
+
+swarm_manager=$1
+username=$2
+
+
+programname=$0
+
+function usage {
+    echo -e "\n"
+    echo -ne "No $(magentaprint USERNAME)  nor $(magentaprint SWARM_HOST) provided!\n"
+    echo -ne "usage: swarm_connect $(redprint hostname) $(redprint [username]) \n"
+    echo "Hostname --   Swarm manager hostname"
+    echo "Username --   USERNAME to connect to manager node"
+
+    exit 1
+}
+
+
+
+if [ $# -lt 2 ]
+then
+  usage
+  exit 1
+fi
+
+
+connect_swarm(){
+		    echo  "Connecting to Swarm manager $swarm_manager with USERNAME  $username"
+		    ssh -tt -A -o StrictHostKeyChecking=no $username@$swarm_manager "test -d  /tmp/Interactive_terminal  || git clone git@github.com:Prashanth-Pullaikodi/Interactive_terminal.git /tmp/Interactive_terminal &&  cd /tmp/Interactive_terminal && git pull && ./interactive_swarm_menu.sh"
+}
+
+
+bye() { echo "Bye bye."; exit 0; }
+fail() { echo "Invalid option." exit 1; }
+
+
+
+mainmenu() {
+echo -ne "
+$(magentaprint 'MAIN MENU')
+$(greenprint '1)') Connect To Swarm manager
+$(redprint   '0)') Exit
+Choose an option:  "
+    read -r ans
+    case $ans in
+    1)
+
+        connect_swarm
+        mainmenu
+        ;;
+    0)
+        bye
+        ;;
+    *)
+        fail
+        ;;
+    esac
+}
+
+mainmenu
