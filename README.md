@@ -14,11 +14,7 @@ A formula is a package definition written in Ruby. It can be created with brew c
   brew install --build-from-source swarm_connect
   ```
 
-* Or install via URL (which will not receive updates):
 
-```bash
-brew install https://github.fidor.de/raw/pullaikodi/homebrew-tap/main/Formula/swarm_connect.rb?token=GHSAT0AAAAAAAAAAYTIHCKMNI6HEIVLFD4WY3XQUZQ
-```
 
 * OR Run bash script without installing brew(you will recive no updates).
 
